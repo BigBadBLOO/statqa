@@ -1,3 +1,4 @@
+
 declare interface IIntegrationApp {
   id?: number,
   uid?: string,

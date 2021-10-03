@@ -1,11 +1,12 @@
 import {
   Column,
   Entity,
-  ManyToOne,
+  ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import {IntegrationApp} from "../integration-app/integration-app.entity";
 import {User} from "../user/user.entity";
+import {IntegrationCabinet} from "../integrtion-cabinet/integration-cabinet.entity";
 
 @Entity()
 export class IntegrationUser {
@@ -32,4 +33,8 @@ export class IntegrationUser {
 
   @ManyToOne(() => User)
   user: User;
+
+  @OneToMany(() => IntegrationCabinet, (cabinets) => cabinets.account)
+  cabinets: IntegrationCabinet[];
+
 }

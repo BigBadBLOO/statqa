@@ -1,5 +1,5 @@
 //core
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {JwtService} from '@nestjs/jwt';
@@ -22,7 +22,7 @@ export class UserService {
   ) {
   }
 
-  async login(loginData: LoginUserDTO): Promise<UserWithToken | Error> {
+  async login(loginData: LoginUserDTO): Promise<UserWithToken | Message> {
     const {password, email} = loginData;
 
     const user = await this.userRepository.findOne(
@@ -32,11 +32,14 @@ export class UserService {
       }
     );
 
-    const isPasswordMatching =
-      user && (await bcrypt.compare(password, user.password));
+    const isPasswordMatching = user && (await bcrypt.compare(password, user.password));
 
-    if (!isPasswordMatching) throw new HttpException('Пользователь не существует', HttpStatus.INTERNAL_SERVER_ERROR);
-
+    if (!isPasswordMatching){
+      return {
+        type: 'error',
+        message: 'Пользователь не существует'
+      }
+    }
     const payload = {
       id: user.id,
     };
@@ -44,13 +47,18 @@ export class UserService {
     return {...user, ...token};
   }
 
-  async signUp(signUpData: SignUpUserDTO): Promise<UserWithToken> {
+  async signUp(signUpData: SignUpUserDTO): Promise<UserWithToken | Message> {
     const {email} = signUpData;
     const user_temp = await this.userRepository.findOne({
       email
     });
 
-    if (user_temp) throw new HttpException('Пользователь уже существует', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (user_temp){
+      return {
+        type: 'error',
+        message: 'Пользователь уже существует'
+      }
+    }
 
     const password = await bcrypt.hash(signUpData.password, 10);
     const user = await this.userRepository.save({...signUpData, password});
@@ -61,10 +69,15 @@ export class UserService {
     return {...user, ...token};
   }
 
-  async changeUserData(user: User, changeUserData: ChangeUserDataDTO): Promise<object | Error> {
+  async changeUserData(user: User, changeUserData: ChangeUserDataDTO): Promise<Message> {
     if (changeUserData.newPassword) {
       const isPasswordMatching = await bcrypt.compare(changeUserData.password, user.password);
-      if (!isPasswordMatching) throw new HttpException('Неверный пароль', HttpStatus.BAD_REQUEST);
+      if (!isPasswordMatching) {
+        return {
+          type: 'error',
+          message: 'Неверный пароль'
+        }
+      }
       user.password = await bcrypt.hash(changeUserData.newPassword, 10);
     }
 
@@ -77,7 +90,10 @@ export class UserService {
     }
 
     await this.userRepository.save(user);
-    return {message: 'Данные успешно изменены'}
+    return {
+      type: 'success',
+      message: 'Данные успешно изменены'
+    }
   }
 
   async findUser(user_id: number): Promise<User> {

@@ -1,3 +1,5 @@
+type Tariff = 'FREE' | 'PAID'
+
 declare interface IUser {
   id?: number
   email: string
@@ -8,6 +10,7 @@ declare interface IUser {
   isConfirmEmail?: boolean
   twoAuth?: boolean
   balance?: number
-
+  tariff: Tariff
+  date_tariff_end: Date
   isLoading?: boolean
 }

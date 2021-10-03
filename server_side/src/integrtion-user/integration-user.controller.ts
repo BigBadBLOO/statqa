@@ -4,7 +4,7 @@ import {IntegrationUserService} from "./integration-user.service";
 import {IntegrationUser} from "./integration-user.entity";
 import {User} from "../user/user.entity";
 
-@Controller('integrationUser')
+@Controller('integration-user')
 export class IntegrationUserController {
   constructor(private readonly integrationUserService: IntegrationUserService) {}
 
@@ -17,7 +17,7 @@ export class IntegrationUserController {
 
   @Post('loginFB')
   @UseGuards(JwtAuthGuard)
-  async loginFB(@Req() req, @Body() body: { token:string }): Promise<IntegrationUser | {error: string}> {
+  async loginFB(@Req() req, @Body() body: { token:string }): Promise<IntegrationUser | Message> {
     const user_id: number = req.user
     return await this.integrationUserService.loginFB(user_id, body.token);
   }

@@ -21,14 +21,25 @@ const workWithServer = {
   },
   // work with integration app
   getAllApp: () => {
-    return requestGet(`${server}/integrationApp/getAllApps/`)
+    return requestGet(`${server}/integration-app/getAllApps/`)
   },
   // work with integration user
   getIntegrationUsers: () => {
-    return requestGet(`${server}/integrationUser/getIntegrationUsers/`)
+    return requestGet(`${server}/integration-user/getIntegrationUsers/`)
   },
   loginFB: (data: {token: string}) => {
-    return requestPost(`${server}/integrationUser/loginFB/`, data)
+    return requestPost(`${server}/integration-user/loginFB/`, data)
+  },
+  // work with integration cabinet
+  getIntegrationCabinetsFromFB: (data: {account_id: number}) => {
+    return requestPost(`${server}/integration-cabinet/getIntegrationCabinetsFromFB/`, data)
+  },
+  saveIntegrationCabinetsFromFB: (data: {account_id: number, cabinets: IIntegrationCabinet[]}) => {
+    return requestPost(`${server}/integration-cabinet/saveIntegrationCabinetsFromFB/`, data)
+  },
+
+  getCampaignsName: () => {
+    return requestGet(`${server}/integration-cabinet/getCampaignsName/`)
   },
 }
 export default workWithServer

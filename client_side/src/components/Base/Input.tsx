@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button} from "@components/Base/Button";
 import workWithServer from "@core/workWithServer";
+import clsx from "clsx";
 
 type typeValue = 'text' | 'number' | 'password'
 
@@ -58,9 +59,10 @@ export const Input: React.FC<InputType> = ({icon, type = 'text', placeholder, la
 interface IImageUploader {
     image: any,
     setImage: (arg0: any) => void
+    circle?: boolean
 }
 
-export const ImageUploader: React.FC<IImageUploader> = ({image, setImage}) => {
+export const ImageUploader: React.FC<IImageUploader> = ({image, setImage, circle=true}) => {
 
     const hiddenFileInput = React.useRef(null);
 
@@ -82,7 +84,7 @@ export const ImageUploader: React.FC<IImageUploader> = ({image, setImage}) => {
             {image
                 ? (
                     <>
-                        <img src={url} className="h-12 w-12 rounded-full" alt="Удалена"/>
+                        <img src={url} className={clsx("h-12 rounded", {"w-12 rounded-full" : circle})} alt="Удалена"/>
                         <span className="my-auto mx-2 text-gray-600 cursor-pointer" onClick={handleClick}>Изменить</span>
                         <span className="my-auto mx-2 text-gray-600 cursor-pointer" onClick={() => setImage(null)}>Удалить</span>
                     </>)
@@ -102,7 +104,7 @@ export const ImageUploader: React.FC<IImageUploader> = ({image, setImage}) => {
 
         </div>
     );
-};
+}
 
 
 function validateNumber(value: string) {

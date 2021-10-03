@@ -6,6 +6,7 @@ import {Button} from "@components/Base/Button";
 
 //hooks
 import useLogin from "@components/userNotAuth/PageHeader/Modal/hooks/useLogin";
+import {Error} from "@components/Base/Error";
 
 const ModalBodyLogin: React.FC = () => {
 
@@ -25,15 +26,12 @@ const ModalBodyLogin: React.FC = () => {
           value={data.email}
           onChange={(e) => {
             data.setEmail(e.target.value);
-            data.setErrorEmail('')
+            data.setErrorEmail(null)
           }}
         />
         {
-          data.errorEmail &&
-          <p className="text-xs text-red-400 pl-2 mt-1 ">
-              <i className="material-icons mr-2 text-base align-middle">warning</i>
-              <span className="my-auto">{data.errorEmail}</span>
-          </p>
+          data.errorEmail && <Error message={data.errorEmail}/>
+
         }
       </div>
 
@@ -52,11 +50,10 @@ const ModalBodyLogin: React.FC = () => {
           }}
         />
         {
-          !data.validPassword &&
-          <p className="text-xs text-red-400 pl-2 mt-1">
-              <i className="material-icons mr-2 text-base align-middle">warning</i>
-              Некорректный пароль
-          </p>
+          !data.validPassword && <Error message={{
+            type: 'error',
+            message: ' Некорректный пароль'
+          }}/>
         }
       </div>
 
@@ -69,6 +66,7 @@ const ModalBodyLogin: React.FC = () => {
           >Забыли пароль?
           </span>
       </div>
+
       <div className="mb-2 text-center">
         <Button className="mx-0 w-full" text="Войти в аккаунт" type="primary" submit={true}/>
       </div>

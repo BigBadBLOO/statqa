@@ -22,12 +22,11 @@ export class IntegrationUserService {
   }
 
   async getIntegrationUsers(user_id: number): Promise<IntegrationUser[]> {
-    const relations = ['app'];
     return await this.integrationUserRepository.find({
       where: {
         user: {id: user_id},
       },
-      relations,
+      relations: ['app', 'cabinets'],
     });
   }
 
@@ -61,7 +60,7 @@ export class IntegrationUserService {
     return await this.integrationUserRepository.save(account);
   }
 
-  async loginFB(user_id: number, token: string): Promise<IntegrationUser | {error: string}> {
+  async loginFB(user_id: number, token: string): Promise<IntegrationUser | Message> {
     const app_fb = await this.appRepository.findOne({
       where: { name: 'Facebook' },
     });
@@ -80,7 +79,10 @@ export class IntegrationUserService {
       let answer_user;
       if (account_fb) {
         if (account_fb.token === access_token) {
-          return { error: 'Токен не требует замены, обновите токен позже'};
+          return {
+            type: 'error',
+            message: 'Токен не требует замены, обновите токен позже'
+          };
         } else {
           account_fb.name = user_response.name;
           account_fb.token = access_token;
@@ -101,7 +103,10 @@ export class IntegrationUserService {
       }
       return answer_user;
     } catch {
-      return {error: 'Не удалось установить соединение с Facebook'}
+      return {
+        type: 'error',
+        message: 'Не удалось установить соединение с Facebook'
+      }
     }
   }
 }

@@ -6,6 +6,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+export enum Tariff {
+  FREE= 'FREE',
+  PAID= 'PAID'
+}
 @Entity()
 @Index(['email'], { unique: true })
 export class User {
@@ -35,6 +39,16 @@ export class User {
 
   @Column({ default: true })
   status: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: Tariff,
+    default: Tariff.FREE,
+  })
+  tariff: Tariff;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  date_tariff_end: Date;
 }
 
 export class UserWithToken extends User {

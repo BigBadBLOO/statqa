@@ -2,25 +2,15 @@ import React, {useState} from "react";
 import {Button} from "@components/Base/Button";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {ImageUploader, Input} from "@components/Base/Input";
+import Row from "@components/Base/Row";
 
 //server
 import workWithServer from "@core/workWithServer";
 
 //redux
 import {setCurrentUser} from "@/store/features/userSlice";
+import {addAlert} from "@/store/features/alertSlice";
 
-interface IRow {
-  label: string
-}
-
-const Row: React.FC<IRow> = ({label, children}) => {
-  return <div className="md:grid md:grid-cols-4 my-6">
-    <p className="md:text-right my-auto mr-4">{label}</p>
-    <div className="md:col-span-3">
-      {children}
-    </div>
-  </div>
-}
 
 export default function Settings() {
   const initUser = useAppSelector((state) => state.user.currentUser)
@@ -114,19 +104,21 @@ export default function Settings() {
           form.append('newPassword', passwordData.password)
           form.append('file', image)
           workWithServer.changeUserDate(form)
-            .then((data) => {
+            .then((data: Message) => {
+              dispatch(addAlert(data))
               const newUser = {
                 ...user,
                 avatar: image
               }
               setUser(newUser)
-              dispatch(setCurrentUser(newUser))
               setPasswordData(initPassword)
+              dispatch(setCurrentUser(newUser))
             })
             .catch((err) => {
-              err.then((errObj: any) => {
-                const message = JSON.parse(errObj).message
-              })
+              dispatch(addAlert({
+                type: 'error',
+                message: 'Ошибка соединения'
+              }))
             })
         }}
       />

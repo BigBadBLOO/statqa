@@ -23,7 +23,6 @@ const TabPanelWithContent: React.FC = () => {
       workWithServer.getIntegrationUsers().then((data) => {
         dispatch(setIntegrationUsers(data))
       })
-
     }
   }, [])
 

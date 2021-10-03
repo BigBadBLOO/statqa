@@ -20,17 +20,17 @@ export class UserController {
 
   @Get('currentUser')
   @UseGuards(JwtAuthGuard)
-  async getCurrentUser(@Req() req): Promise<User | Error> {
+  async getCurrentUser(@Req() req): Promise<User | Message> {
     return await this.userService.findUser(req.user);
   }
 
   @Post('login')
-  async login(@Req() req, @Body() body: LoginUserDTO): Promise<User | Error> {
+  async login(@Req() req, @Body() body: LoginUserDTO): Promise<User | Message> {
     return await this.userService.login(body);
   }
 
   @Post('signup')
-  async signUp(@Req() req, @Body() body: SignUpUserDTO): Promise<User | Error> {
+  async signUp(@Req() req, @Body() body: SignUpUserDTO): Promise<User | Message> {
     return await this.userService.signUp(body);
   }
 
@@ -45,7 +45,7 @@ export class UserController {
       }
     })
   }))
-  async changeUserData(@Req() req, @Body() body: ChangeUserDataDTO, @UploadedFile() file: Express.Multer.File): Promise<object | Error> {
+  async changeUserData(@Req() req, @Body() body: ChangeUserDataDTO, @UploadedFile() file: Express.Multer.File): Promise<Message> {
     const user = await this.userService.findUser(req.user);
     if(body.file === 'null'){
       try {

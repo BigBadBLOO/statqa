@@ -22,7 +22,7 @@ export const appSlice = createSlice({
     },
     setIntegrationUsers: (state, action: PayloadAction<IIntegrationUser[]>) => {
       state.allIntegrationUsers = action.payload
-    },
+    }
   },
 })
 

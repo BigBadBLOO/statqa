@@ -8,10 +8,12 @@ import workWithServer from "@core/workWithServer";
 //redux
 import {useAppDispatch} from "@/store/hooks";
 import {setCurrentUser} from "@/store/features/userSlice";
+import {data} from "autoprefixer";
 
 export default function useLogin() {
   const [email, setEmail] = useState('');
-  const [errorEmail, setErrorEmail] = useState('');
+  const initError: Message = null
+  const [errorEmail, setErrorEmail] = useState(initError);
   const [password, setPassword] = useState('');
   const [validPassword, setValidPassword] = useState(true);
 
@@ -19,7 +21,7 @@ export default function useLogin() {
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const validEmail = email && email.includes('@') && email.includes('.')
-    setErrorEmail(validEmail ? '' : 'Некорректная почта')
+    setErrorEmail(validEmail ? null : { message: 'Некорректная почта', type: 'error'})
     const validPassword = !!password
 
     setValidPassword(validPassword)
@@ -30,14 +32,20 @@ export default function useLogin() {
         password
       })
         .then(r => {
-          const {token, ...data} = r
-          dispatch(setCurrentUser(data))
-          Cookies.set('token', token)
+          if( r.type === 'error'){
+            setErrorEmail(r)
+          }else{
+            const {token, ...data} = r
+            dispatch(setCurrentUser(data))
+            Cookies.set('token', token)
+          }
         })
         .catch(async (err) => {
-          const errObj = await err
-          const message = JSON.parse(errObj).message
-          setErrorEmail(message)
+          setErrorEmail({
+            type: 'error',
+            message: 'Отсутствует интернет соединение'
+          })
+
         })
     }
   }

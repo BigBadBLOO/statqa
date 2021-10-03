@@ -17,7 +17,7 @@ const UserAvatar: React.FC = () => {
 
   const firstSymbol = user.username[0]
   return (
-    <div className="hidden ml-auto md:flex mr-2">
+    <div className="pl-4 hidden md:flex mr-2">
       <p className="my-auto mr-2 font-bold">{user.username}</p>
       {
         url

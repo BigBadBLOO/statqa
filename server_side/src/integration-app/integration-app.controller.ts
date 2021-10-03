@@ -5,7 +5,7 @@ import {User} from "../user/user.entity";
 import {IntegrationAppService} from "./integration-app.service";
 import {IntegrationApp} from "./integration-app.entity";
 
-@Controller('integrationApp')
+@Controller('integration-app')
 export class IntegrationAppController {
   constructor(private readonly appService: IntegrationAppService) {}
 

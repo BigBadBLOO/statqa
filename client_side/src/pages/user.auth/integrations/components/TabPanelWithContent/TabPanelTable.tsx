@@ -104,7 +104,7 @@ const TabPanelTable: React.FC<ITabPanelTable> = ({data}) => {
                                 }
                             </div>
                             <CheckBox
-                                className={clsx("m-1", {"ml-6": row.original.__typename === 'CabinetIntegration'})}
+                                className={clsx("m-1", {"ml-6": row.original.hasOwnProperty('access_get_statistic')})}
                                 type="indeterminate" {...row.getToggleRowSelectedProps()}
                             />
                             {
@@ -145,7 +145,7 @@ const TabPanelTable: React.FC<ITabPanelTable> = ({data}) => {
                                         className="px-1 ml-1 w-14 border rounded outline-none whitespace-nowrap"
                                         onKeyPress={(e) => {
                                             const x = e.charCode || e.keyCode;
-                                            if (isNaN(String.fromCharCode(e.which)) && x != 46 || x === 32 || x === 13 || (x === 46 && e.target.value.includes('.'))) e.preventDefault();
+                                            if (isNaN(Number(String.fromCharCode(e.which))) && x != 46 || x === 32 || x === 13 || (x === 46 && e.target.value.includes('.'))) e.preventDefault();
                                         }}
                                         onChange={(e) => {
                                             const value = e.target.value
