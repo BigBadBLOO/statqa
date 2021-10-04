@@ -14,6 +14,7 @@ const PageNotFound = lazy(() => import('@pages/common/ErrorPages/PageNotFound404
 const Documentation = lazy(() => import('@pages/user.auth/Documentation/Documentation'));
 const Settings = lazy(() => import("@pages/user.auth/settings/Settings"));
 const Integrations = lazy(() => import("@pages/user.auth/integrations/Integrations"));
+const Tariffs = lazy(() => import("@pages/user.auth/tariffs/Tariffs"));
 
 const CreateStatistic = lazy(() => import("@pages/user.auth/createStatistic/CreateStatistic"));
 const RouterNavbar: React.FC = () => {
@@ -27,6 +28,8 @@ const RouterNavbar: React.FC = () => {
             {/*работа со статистиками*/}
             <Route path="/" exact={true} component={Home}/>
             <Route path="/createStatistic/" exact={true} component={CreateStatistic}/>
+            {/*Интеграции*/}
+            <Route path="/tariffs/" exact component={Tariffs}/>
             {/*Интеграции*/}
             <Route path="/integrations/" exact component={Integrations}/>
             {/*Настройки*/}
