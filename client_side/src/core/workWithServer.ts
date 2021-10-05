@@ -51,6 +51,11 @@ const workWithServer = {
   getCampaignsName: () => {
     return requestGet(`${server}/integration-cabinet/get-campaigns-name/`)
   },
+
+  // work with statistic
+  saveStatistic: (data: Statistic) => {
+    return requestPost(`${server}/statistic/save-statistic/`, data)
+  },
 }
 export default workWithServer
 

@@ -8,7 +8,7 @@ type typeValue = 'text' | 'number' | 'password'
 type InputType = {
     icon?: string,
     type?: typeValue,
-    value: string,
+    value: string | number,
     className?: string,
     placeholder: string,
     label?: string,
@@ -43,7 +43,7 @@ export const Input: React.FC<InputType> = ({icon, type = 'text', placeholder, la
                     className="focus:outline-none w-full"
                     type={type}
                     onChange={e => {
-                        let tempValue = e.target.value
+                        let tempValue: string | number = e.target.value
                         if (type === 'number' && !validateNumber(tempValue)) tempValue = value
                         setValue(tempValue)
                     }}

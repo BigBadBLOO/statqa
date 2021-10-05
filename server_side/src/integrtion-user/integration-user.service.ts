@@ -41,7 +41,7 @@ export class IntegrationUserService {
     const result = {};
     const users = await this.integrationUserRepository.find({
       where: {
-        user: Any(body),
+        id: Any(body),
       },
       relations: ['app', 'cabinets'],
     });

@@ -1,7 +1,6 @@
 //core
-import React, {ReactEventHandler, useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useExpanded, useRowSelect, useTable} from "react-table";
-import Moment from "react-moment";
 import clsx from "clsx";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
@@ -10,10 +9,12 @@ import CheckBox from "@components/Base/CheckBox";
 
 //styles
 import './tabPanelTable.css'
+
+//redux
 import {useAppDispatch} from "@/store/hooks";
 import {setSelectedRows} from "@/store/features/integrationPageSlice";
 import workWithServer from "@core/workWithServer";
-import {addAlert} from "@/store/features/alertSlice";
+
 import {
     IntegrationCabinetRow,
     IntegrationUserRow
@@ -29,8 +30,8 @@ const TabPanelTable: React.FC<ITabPanelTable> = ({data}) => {
     //for test status account
     useEffect(() => {
         workWithServer.getStatusAccounts(data.map(el => el.id))
-            .then(data => {
-                setAccountConnection(data)
+            .then(res => {
+                setAccountConnection(res)
             })
 
     }, [])

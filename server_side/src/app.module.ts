@@ -5,6 +5,7 @@ import {UserModule} from "./user/user.module";
 import {IntegrationAppModule} from './integration-app/integration-app.module';
 import {IntegrationUserModule} from './integrtion-user/integration-user.module';
 import {IntegrationCabinetModule} from './integrtion-cabinet/integration-cabinet.module';
+import { StatisticModule } from './statistic/statistic.module';
 import config from "../config/config";
 
 @Module({
@@ -14,6 +15,7 @@ import config from "../config/config";
     IntegrationAppModule,
     IntegrationUserModule,
     IntegrationCabinetModule,
+    StatisticModule,
   ],
   controllers: [],
   providers: [],

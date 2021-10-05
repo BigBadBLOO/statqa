@@ -3,4 +3,6 @@ declare interface Statistic {
   description?: string
   avatar?: string
   tags?: string
+  conversion?: number
+  campaigns?: Campaign[]
 }

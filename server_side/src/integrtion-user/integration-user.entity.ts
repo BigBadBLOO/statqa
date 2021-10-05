@@ -36,5 +36,4 @@ export class IntegrationUser {
 
   @OneToMany(() => IntegrationCabinet, (cabinets) => cabinets.account)
   cabinets: IntegrationCabinet[];
-
 }

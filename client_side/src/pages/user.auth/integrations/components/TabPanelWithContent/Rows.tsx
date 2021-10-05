@@ -17,7 +17,7 @@ export const IntegrationUserRow: React.FC<IIntegrationUserRow> = ({row, accountC
         <div className="ml-auto flex">
             <span className="mr-1 my-auto hidden sm:block">Обновлен: </span>
             <Moment
-                className="my-auto mr-2 w-24"
+                className="my-auto mr-2 w-28"
                 format="D MMM YYYY"
                 locale="ru"
             >
@@ -46,13 +46,13 @@ export const IntegrationCabinetRow: React.FC<IIntegrationCabinetRow> = ({row}) =
     const [factor, setFactor] = useState(row.original.factor)
     const [checked, setChecked] = useState(row.original.access_get_statistic)
     const dispatch = useAppDispatch()
-    return <div className="flex w-full">
-                                    <span className="truncate w-32 md:w-auto">
+    return <div className="flex w-full overflow-auto">
+                                    <span className="truncate ">
                                         {row.original.name} x
                                     </span>
         <input
             value={factor}
-            className="px-1 ml-1 w-14 border rounded outline-none whitespace-nowrap"
+            className="px-1 mx-2 w-10 border rounded outline-none whitespace-nowrap"
             onKeyPress={(e) => {
                 const x = e.charCode || e.keyCode;
                 if (isNaN(Number(String.fromCharCode(e.which))) &&
