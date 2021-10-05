@@ -56,6 +56,7 @@ export default function Settings() {
               ? <div className="md:flex">
                 <Input
                   value={passwordData.oldPassword}
+                  type="password"
                   placeholder="Текущий пароль"
                   setValue={(oldPassword) => {
                     setPasswordData((prev) => ({...prev, oldPassword}))
@@ -63,6 +64,7 @@ export default function Settings() {
                 />
                 <Input
                   value={passwordData.password}
+                  type="password"
                   placeholder="Новый пароль"
                   setValue={(password) => {
                     setPasswordData((prev) => ({...prev, password}))
@@ -70,6 +72,7 @@ export default function Settings() {
                 />
                 <Input
                   value={passwordData.passwordConfirm}
+                  type="password"
                   placeholder="Повт. новый пароль"
                   setValue={(passwordConfirm) => {
                     setPasswordData((prev) => ({...prev, passwordConfirm}))

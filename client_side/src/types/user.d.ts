@@ -10,7 +10,7 @@ declare interface IUser {
   isConfirmEmail?: boolean
   twoAuth?: boolean
   balance?: number
-  tariff: Tariff
-  date_tariff_end: Date
+  tariff?: Tariff
+  date_tariff_end?: Date
   isLoading?: boolean
 }

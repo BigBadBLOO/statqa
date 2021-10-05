@@ -1,8 +1,8 @@
 //core
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 
 //components
-import {Button} from "@components/Base/Button";
+import HeaderPage from "@pages/user.auth/integrations/components/HeaderPage";
 import TabPanelWithContent from "./components/TabPanelWithContent/TabPanelWIthContent";
 
 //styles
@@ -12,8 +12,10 @@ import workWithServer from "@core/workWithServer";
 import {setAllApps} from "@/store/features/integrationAppSlice";
 
 
+
 const Integrations: React.FC = () => {
   const apps = useAppSelector((state => state.app.allApps))
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -24,26 +26,9 @@ const Integrations: React.FC = () => {
     }
   }, [])
 
-  const handleDelete = () => {
-
-  }
-
   return (
     <>
-      <div className="flex divide-x-2">
-        <p className="font-bold text-xl my-auto mr-2">Интеграция</p>
-        <div>
-          <Button
-            type="secondary"
-            disabled={true}
-            text="Удалить"
-            icon="delete"
-            className="ml-2"
-            classNameText="sm:block"
-            onClick={() => handleDelete}
-          />
-        </div>
-      </div>
+      <HeaderPage/>
       <TabPanelWithContent/>
     </>
   )

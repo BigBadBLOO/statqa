@@ -5,41 +5,51 @@ const server = serverURI
 const workWithServer = {
   //work with user
   currentUser: () => {
-    return requestGet(`${server}/user/currentUser/`)
+    return requestGet(`${server}/user/current-user/`)
   },
   login: (data: IUser) => {
     return requestPost(`${server}/user/login/`, data)
   },
   signup: (data: IUser) => {
-    return requestPost(`${server}/user/signup/`, data)
+    return requestPost(`${server}/user/sign-up/`, data)
   },
   changeUserDate: (data: FormData) => {
-    return requestPostFormData(`${server}/user/changeUserData/`, data)
+    return requestPostFormData(`${server}/user/change-user-data/`, data)
   },
   getUserAvatar: (imageName: string) => {
     return `${server}/user/avatar/${imageName}`
   },
   // work with integration app
   getAllApp: () => {
-    return requestGet(`${server}/integration-app/getAllApps/`)
+    return requestGet(`${server}/integration-app/get-all-apps/`)
   },
   // work with integration user
   getIntegrationUsers: () => {
-    return requestGet(`${server}/integration-user/getIntegrationUsers/`)
+    return requestGet(`${server}/integration-user/get-integration-users/`)
+  },
+  // work with integration user
+  getStatusAccounts: (data: number[]) => {
+    return requestPost(`${server}/integration-user/get-status-accounts/`, data)
+  },
+  deleteUserAndCabinet: (data: SelectedRowIntegration[]) => {
+    return requestPost(`${server}/integration-user/delete-users-and-cabinets/`, data)
   },
   loginFB: (data: {token: string}) => {
-    return requestPost(`${server}/integration-user/loginFB/`, data)
+    return requestPost(`${server}/integration-user/login-FB/`, data)
   },
   // work with integration cabinet
+  setCabinetInfo: (data: {cabinet_id: number, factor: number, access_get_statistic: boolean}) => {
+    return requestPost(`${server}/integration-cabinet/set-cabinet-info/`, data)
+  },
   getIntegrationCabinetsFromFB: (data: {account_id: number}) => {
-    return requestPost(`${server}/integration-cabinet/getIntegrationCabinetsFromFB/`, data)
+    return requestPost(`${server}/integration-cabinet/get-integration-cabinets-from-FB/`, data)
   },
   saveIntegrationCabinetsFromFB: (data: {account_id: number, cabinets: IIntegrationCabinet[]}) => {
-    return requestPost(`${server}/integration-cabinet/saveIntegrationCabinetsFromFB/`, data)
+    return requestPost(`${server}/integration-cabinet/save-integration-cabinets-from-FB/`, data)
   },
 
   getCampaignsName: () => {
-    return requestGet(`${server}/integration-cabinet/getCampaignsName/`)
+    return requestGet(`${server}/integration-cabinet/get-campaigns-name/`)
   },
 }
 export default workWithServer

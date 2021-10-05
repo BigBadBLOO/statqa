@@ -1,7 +1,5 @@
 //core
 import React, {useEffect} from "react";
-import {positions, Provider} from "react-alert";
-import clsx from "clsx";
 
 //components
 import GlobalLoader from "@components/Loaders/GlobaLoader";
@@ -16,8 +14,8 @@ import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {setCurrentUser} from "@/store/features/userSlice";
 
 const App: React.FC = () => {
-  const user = useAppSelector((state) => state.user.currentUser)
-  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.user.currentUser);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
       workWithServer.currentUser()

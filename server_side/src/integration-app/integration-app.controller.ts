@@ -9,7 +9,7 @@ import {IntegrationApp} from "./integration-app.entity";
 export class IntegrationAppController {
   constructor(private readonly appService: IntegrationAppService) {}
 
-  @Get('getAllApps')
+  @Get('get-all-apps')
   @UseGuards(JwtAuthGuard)
   async getAllApps(): Promise<IntegrationApp[]> {
     return await this.appService.getAllApps();

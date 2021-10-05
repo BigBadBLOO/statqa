@@ -15,7 +15,7 @@ export default function CreateStatistic() {
     name: '',
   }
   const [addStatistic, setAddStatistic] = useState(initStatistic)
-  const [image, setImage] = useState(initStatistic.avatar)
+  const [image, setImage] = useState(addStatistic.avatar)
   const [campaigns, setCampaigns] = useState([])
 
   useEffect(() => {

@@ -18,7 +18,7 @@ import {ChangeUserDataDTO} from "./dto/changeUserData.dto";
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('currentUser')
+  @Get('current-user')
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Req() req): Promise<User | Message> {
     return await this.userService.findUser(req.user);
@@ -29,12 +29,12 @@ export class UserController {
     return await this.userService.login(body);
   }
 
-  @Post('signup')
+  @Post('sign-up')
   async signUp(@Req() req, @Body() body: SignUpUserDTO): Promise<User | Message> {
     return await this.userService.signUp(body);
   }
 
-  @Post('changeUserData')
+  @Post('change-user-data')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file',  {
     storage: diskStorage({
