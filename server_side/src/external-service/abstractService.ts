@@ -2,7 +2,6 @@ import {HttpService} from "@nestjs/common";
 import {IntegrationUser} from "../integrtion-user/integration-user.entity";
 
 
-
 export default abstract class AbstractService {
   account: IntegrationUser;
   httpService: HttpService

@@ -15,7 +15,7 @@ const UserAvatar: React.FC = () => {
     else url = workWithServer.getUserAvatar(user.avatar)
   }
 
-  const firstSymbol = user.username[0]
+  const firstSymbol = user && user.username[0]
   return (
     <div className="pl-4 hidden md:flex mr-2">
       <p className="my-auto mr-2 font-bold">{user.username}</p>

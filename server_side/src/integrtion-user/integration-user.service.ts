@@ -1,14 +1,19 @@
+//core
 import {HttpService, Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
+import {Any, Repository} from "typeorm";
+
+//entity
 import {IntegrationUser} from "./integration-user.entity";
 import {IntegrationApp} from "../integration-app/integration-app.entity";
-import {User} from "../user/user.entity";
+import {IntegrationCabinet} from "../integrtion-cabinet/integration-cabinet.entity";
 
-type TypeUserFBResponse = {
-  id: string;
-  name: string;
-};
+//external service
+import Facebook from "../external-service/Facebook";
+import FactoryService from "../external-service/factoryService";
+
+//dto
+import {DeleteUsersAndCabinetsDto} from "./dto/delete-users-and-cabinets.dto";
 
 @Injectable()
 export class IntegrationUserService {
@@ -18,6 +23,8 @@ export class IntegrationUserService {
     private appRepository: Repository<IntegrationApp>,
     @InjectRepository(IntegrationUser)
     private integrationUserRepository: Repository<IntegrationUser>,
+    @InjectRepository(IntegrationCabinet)
+    private integrationCabinetRepository: Repository<IntegrationCabinet>,
   ) {
   }
 
@@ -28,6 +35,23 @@ export class IntegrationUserService {
       },
       relations: ['app', 'cabinets'],
     });
+  }
+
+  async getStatusAccounts(body: number[]): Promise<{ [key: number]: boolean }> {
+    const result = {};
+    const users = await this.integrationUserRepository.find({
+      where: {
+        user: Any(body),
+      },
+      relations: ['app', 'cabinets'],
+    });
+    const factory = new FactoryService(this.httpService);
+    for(let i =0; i < users.length; i++) {
+      const user = users[i]
+      const service = factory.getService(user);
+      result[user.id] = await service.statusAccount()
+    }
+    return result
   }
 
   async addIntegrationAccount(
@@ -61,52 +85,20 @@ export class IntegrationUserService {
   }
 
   async loginFB(user_id: number, token: string): Promise<IntegrationUser | Message> {
-    const app_fb = await this.appRepository.findOne({
-      where: { name: 'Facebook' },
-    });
-    try {
-      const url_access_token = `https://graph.facebook.com/v${app_fb.version}/oauth/access_token?grant_type=fb_exchange_token&client_id=${app_fb.uid}&client_secret=${app_fb.key}&fb_exchange_token=${token}`;
-      const response = await this.httpService.get(url_access_token).toPromise();
-      const access_token = response.data['access_token'];
-      const url = `https://graph.facebook.com/v${app_fb.version}/me?fields=name,id&access_token=${access_token}`;
-      const answer = await this.httpService.get(url).toPromise();
-      const user_response: TypeUserFBResponse = answer.data;
-      const account_fb = await this.integrationUserRepository.findOne({
-        where: {
-          uid: user_response.id,
-        },
-      });
-      let answer_user;
-      if (account_fb) {
-        if (account_fb.token === access_token) {
-          return {
-            type: 'error',
-            message: 'Токен не требует замены, обновите токен позже'
-          };
-        } else {
-          account_fb.name = user_response.name;
-          account_fb.token = access_token;
-          account_fb.token_date_update = new Date();
-          answer_user = await this.integrationUserRepository.save(account_fb);
-        }
-      } else {
-        const save_user = new IntegrationUser();
-        save_user.uid = user_response.id;
-        save_user.name = user_response.name;
-        save_user.token = access_token;
-        save_user.token_date_update = new Date();
-        save_user.app = app_fb;
-        const temp_user = new User();
-        temp_user.id = user_id
-        save_user.user = temp_user;
-        answer_user = await this.integrationUserRepository.save(save_user);
-      }
-      return answer_user;
-    } catch {
-      return {
-        type: 'error',
-        message: 'Не удалось установить соединение с Facebook'
-      }
+    const fb = new Facebook(null, this.httpService);
+    return  await fb.loginFB(user_id, token, this.appRepository, this.integrationUserRepository);
+  }
+
+  async deleteUserAndCabinet(data: DeleteUsersAndCabinetsDto[]): Promise<Message> {
+    const user_ids = data.filter(row => row.type === 'user').map(row => row.id)
+    const cabinet_ids = data.filter(row => row.type === 'cabinet').map(row => row.id)
+
+    if(user_ids.length > 0) await this.integrationUserRepository.delete(user_ids)
+    if(cabinet_ids.length > 0) await this.integrationCabinetRepository.delete(cabinet_ids)
+
+    return  {
+      type: 'success',
+      message: 'Данные успешно удалены'
     }
   }
 }

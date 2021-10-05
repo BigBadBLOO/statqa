@@ -16,7 +16,7 @@ export class IntegrationCabinetService {
     @InjectRepository(IntegrationUser)
     private integrationUserRepository: Repository<IntegrationUser>,
     @InjectRepository(IntegrationCabinet)
-    private integrationUCabinetRepository: Repository<IntegrationCabinet>,
+    private integrationCabinetRepository: Repository<IntegrationCabinet>,
   ) {
   }
 
@@ -31,7 +31,7 @@ export class IntegrationCabinetService {
       const accounts = response.data.adaccounts.data;
       const answer = [];
       const map_cabinets = async (cabinet) => {
-        const saved_cabinet = await this.integrationUCabinetRepository.findOne({
+        const saved_cabinet = await this.integrationCabinetRepository.findOne({
           where: {uid: cabinet.id},
           relations: ['account'],
         });
@@ -64,7 +64,7 @@ export class IntegrationCabinetService {
     account.id = account_id
     const response = [];
     for (const item of cabinets) {
-      const exit_cabinet = await this.integrationUCabinetRepository.findOne({
+      const exit_cabinet = await this.integrationCabinetRepository.findOne({
         where: {
           uid: item.uid
         }
@@ -74,10 +74,18 @@ export class IntegrationCabinetService {
         cabinet_save.uid = item.uid;
         cabinet_save.name = item.name;
         cabinet_save.account = account;
-        response.push(await this.integrationUCabinetRepository.save(cabinet_save));
+        response.push(await this.integrationCabinetRepository.save(cabinet_save));
       }
     }
     return response;
+  }
+
+  async setCabinetInfo(data: { cabinet_id: number, factor: number, access_get_statistic: boolean }): Promise<IntegrationCabinet>{
+    return await this.integrationCabinetRepository.save({
+      id: data.cabinet_id,
+      factor: data.factor,
+      access_get_statistic: data.access_get_statistic
+    })
   }
 
   async getCampaignsName(user_id: number): Promise<object[]>{

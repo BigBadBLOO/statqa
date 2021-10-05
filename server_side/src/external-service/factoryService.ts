@@ -5,7 +5,7 @@ import {IntegrationUser} from "../integrtion-user/integration-user.entity";
 import {HttpService} from "@nestjs/common";
 
 export default class FactoryService {
-  httpService: HttpService
+  httpService: HttpService;
   constructor(httpService) {
     this.httpService = httpService
   }
