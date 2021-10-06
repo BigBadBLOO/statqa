@@ -53,6 +53,9 @@ const workWithServer = {
   },
 
   // work with statistic
+  getStatistics: () => {
+    return requestGet(`${server}/statistic/get-statistics/`)
+  },
   saveStatistic: (data: Statistic) => {
     return requestPost(`${server}/statistic/save-statistic/`, data)
   },

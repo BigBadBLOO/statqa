@@ -1,11 +1,15 @@
 import React from "react";
 import {Button} from "@components/Base/Button";
 import GroupOfBlockAdd from "@pages/user.auth/home/BlockAdd";
+import {useAppSelector} from "@/store/hooks";
+import ListOfStatistic from "@pages/user.auth/home/ListOfStatistic";
 
-
+//#TODO button filter
 export default function Home() {
 
-  const statistics = []
+  const statistics = useAppSelector((state) => state.statistic.statistics);
+
+
   return (
     <>
       <div className="flex divide-x-2">
@@ -25,7 +29,7 @@ export default function Home() {
       {
         statistics.length === 0
           ? <GroupOfBlockAdd/>
-          : <div> 1</div>
+          : <ListOfStatistic statistics={statistics}/>
       }
 
     </>
