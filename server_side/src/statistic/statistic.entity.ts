@@ -13,6 +13,12 @@ export class Statistic {
   @Column({ nullable: true, default: '' })
   description: string;
 
+  @Column({ nullable: false, default: false })
+  in_archive: boolean;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  date_start_in_archive: Date;
+
   @Column({ nullable: true, default: '' })
   avatar: string;
 
@@ -28,6 +34,21 @@ export class Statistic {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @OneToMany(() => User, (user) => user.accessToStatistic)
-  accessForUsers: User[]
+  @OneToMany(() => StatisticAccessForUsers, (user) => user.statistic)
+  accessForUsers: StatisticAccessForUsers[]
+}
+
+@Entity()
+export class StatisticAccessForUsers {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToMany(() => Campaign, (campaign) => campaign.statistic)
+  campaigns: Campaign[];
+
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  user: User;
+
+  @ManyToOne(() => Statistic, { onDelete: 'CASCADE' })
+  statistic: Statistic;
 }

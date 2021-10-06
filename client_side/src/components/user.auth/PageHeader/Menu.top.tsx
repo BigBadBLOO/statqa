@@ -4,6 +4,7 @@ import React from "react";
 import UserAvatar from "@components/user.auth/PageHeader/User.avatar";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {setCurrentUser} from "@/store/features/userSlice";
+import SearchStatistic from "@components/user.auth/PageHeader/SearchStatistic";
 
 
 const MenuTop: React.FC = () => {
@@ -24,8 +25,9 @@ const MenuTop: React.FC = () => {
   const day = delta === 1 ? 'день' : delta < 4 ? 'дня' : 'дней'
   return (
     <>
-      <div className="fixed left-0 top-0 w-full p-2 h-12 border-b z-10 align-middle bg-white flex divide-x">
-        <div className="ml-auto flex">
+      <div className="fixed left-0 top-0 w-full p-2 pl-24 md:pl-40 h-12 border-b z-10 align-middle bg-white flex ">
+        <SearchStatistic/>
+        <div className="ml-auto flex divide-x">
           <i className="material-icons text-myGray my-auto mr-4">account_balance_wallet</i>
           {
             user.tariff === 'PAID' && user.date_tariff_end
@@ -40,8 +42,9 @@ const MenuTop: React.FC = () => {
               }}
               >all_inclusive</i>
           }
+          <UserAvatar/>
         </div>
-        <UserAvatar/>
+
       </div>
       {email_confirm_jsx}
     </>

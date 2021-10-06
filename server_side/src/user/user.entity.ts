@@ -2,10 +2,10 @@
 import {
   Column,
   Entity,
-  Index, ManyToOne,
+  Index, ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import {Statistic} from "../statistic/statistic.entity";
+import {Statistic, StatisticAccessForUsers} from "../statistic/statistic.entity";
 
 export enum Tariff {
   FREE= 'FREE',
@@ -51,11 +51,11 @@ export class User {
   @Column({ type: 'timestamptz', nullable: true })
   date_tariff_end: Date;
 
-  @ManyToOne(() => Statistic)
+  @OneToMany(() => Statistic, (user) => user.user)
   statistics: Statistic[];
 
-  @ManyToOne(() => Statistic)
-  accessToStatistic: Statistic[];
+  @OneToMany(() => StatisticAccessForUsers, (user) => user.user)
+  accessToStatistic: StatisticAccessForUsers[]
 }
 
 export class UserWithToken extends User {
