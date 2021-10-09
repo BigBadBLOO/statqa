@@ -1,5 +1,4 @@
-// Infer the `RootState` and `AppDispatch` types from the store itself
-import {store} from "@/index";
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+import store from "@/store/store";
+
 declare type AppDispatch = typeof store.dispatch
 declare type RootState = ReturnType<typeof store.getState>

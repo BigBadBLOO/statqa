@@ -76,9 +76,8 @@ export const ImageUploader: React.FC<IImageUploader> = ({image, setImage, circle
     let url = ''
     if(image) {
         if(typeof image === 'object') url = URL.createObjectURL(image)
-        else url = workWithServer.getUserAvatar(image)
+        else url = image
     }
-
     return (
         <div className="flex">
             {image

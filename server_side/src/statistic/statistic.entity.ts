@@ -28,13 +28,18 @@ export class Statistic {
   @Column({ nullable: true })
   conversion: number;
 
-  @OneToMany(() => Campaign, (campaign) => campaign.statistic)
+  @OneToMany(() => Campaign, (campaign) => campaign.statistic, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   campaigns: Campaign[];
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @OneToMany(() => StatisticAccessForUsers, (user) => user.statistic)
+  @OneToMany(() => StatisticAccessForUsers, (user) => user.statistic, {
+    cascade: true,
+  })
   accessForUsers: StatisticAccessForUsers[]
 }
 
@@ -43,12 +48,9 @@ export class StatisticAccessForUsers {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Campaign, (campaign) => campaign.statistic)
-  campaigns: Campaign[];
-
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(() => Statistic, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Statistic, (statistic) => statistic.accessForUsers,{ onDelete: 'CASCADE' })
   statistic: Statistic;
 }

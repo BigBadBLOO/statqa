@@ -3,15 +3,15 @@ import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {JwtService} from '@nestjs/jwt';
-import bcrypt = require('bcrypt');
 
 //entity
-import {User, UserWithToken} from './user.entity';
+import {Tariff, User, UserWithToken} from './user.entity';
 
 //dto
 import {LoginUserDTO} from './dto/login.dto';
 import {SignUpUserDTO} from './dto/signUp.dto';
 import {ChangeUserDataDTO} from "./dto/changeUserData.dto";
+import bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
@@ -40,6 +40,7 @@ export class UserService {
         message: 'Пользователь не существует'
       }
     }
+
     const payload = {
       id: user.id,
     };
@@ -94,6 +95,17 @@ export class UserService {
       type: 'success',
       message: 'Данные успешно изменены'
     }
+  }
+
+  async status_tariff(user: User): Promise<User> {
+    const date = new Date();
+    const date_tariff = new Date(user.date_tariff_end)
+    if(date_tariff < date){
+      user.tariff = Tariff.FREE
+      user.date_tariff_end = null
+      await this.userRepository.save(user)
+    }
+    return user
   }
 
   async findUser(user_id: number): Promise<User> {

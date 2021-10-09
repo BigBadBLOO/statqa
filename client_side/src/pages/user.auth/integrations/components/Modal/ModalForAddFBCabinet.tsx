@@ -5,9 +5,11 @@ import React, {useEffect, useState} from "react";
 import {Selector} from "@components/Base/Selector";
 import {Button} from "@components/Base/Button";
 import MyModal from "@components/Modal/Modal";
-import GlobalLoader from "@components/Loaders/GlobaLoader";
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
+
 import workWithServer from "@core/workWithServer";
+
+//redux
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {setIntegrationUsers} from "@/store/features/integrationAppSlice";
 
 interface IModalForAddApp {
@@ -32,13 +34,13 @@ const ModalForAddFBCabinet: React.FC<IModalForAddApp> = ({show, setShow}) => {
       setIsLoadingCabinet(true)
       const account_id = selectedAccount.id
       workWithServer.getIntegrationCabinetsFromFB({account_id})
-        .then((data: IIntegrationCabinet[] | ErrorMessage) => {
+        .then((data: IIntegrationCabinet[] | Message) => {
           setSelectedCabinets([])
           if (Array.isArray(data)) {
             setCabinets(data)
-          } else if (typeof data === 'object' && data.error) {
+          } else if (typeof data === 'object') {
             setCabinets([])
-            setError(data.error)
+            setError(data.message)
           }
           setIsLoadingCabinet(false)
         })

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
 
 // Define a type for the slice state
 interface StatisticState {
@@ -22,6 +21,4 @@ export const statisticSlice = createSlice({
 })
 
 export const { setStatistics } = statisticSlice.actions;
-export const statistics = (state: RootState) => state.statistic.statistics;
-
 export default statisticSlice.reducer

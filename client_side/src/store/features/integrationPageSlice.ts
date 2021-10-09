@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
 
 // Define a type for the slice state
 interface IntegrationPageState {
@@ -22,7 +21,4 @@ export const integrationPageSlice = createSlice({
 });
 
 export const { setSelectedRows } = integrationPageSlice.actions;
-
-export const selectedRows = (state: RootState) => state.integrationPage.selectedRows;
-
 export default integrationPageSlice.reducer

@@ -23,11 +23,12 @@ const RouterNavbar: React.FC = () => {
       <Header/>
       <Alert/>
       <BodyWrapper>
-        <Suspense fallback={GlobalLoader}>
+        <Suspense fallback={<GlobalLoader/>}>
           <Switch>
             {/*работа со статистиками*/}
             <Route path="/" exact={true} component={Home}/>
             <Route path="/createStatistic/" exact={true} component={CreateStatistic}/>
+            <Route path="/editStatistic/:id" exact={true} component={CreateStatistic}/>
             {/*Интеграции*/}
             <Route path="/tariffs/" exact component={Tariffs}/>
             {/*Интеграции*/}

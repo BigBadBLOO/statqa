@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
 
 // Define a type for the slice state
 interface AppState {
@@ -28,7 +27,4 @@ export const appSlice = createSlice({
 
 export const { setAllApps } = appSlice.actions
 export const { setIntegrationUsers } = appSlice.actions
-
-export const allApps = (state: RootState) => state.app
-
 export default appSlice.reducer

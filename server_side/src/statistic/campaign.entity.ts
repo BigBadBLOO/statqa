@@ -12,6 +12,9 @@ export class Campaign {
   @Column({ nullable: true, default: '' })
   name: string;
 
-  @ManyToOne(() => Statistic, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Statistic)
   statistic: Statistic;
+
+  @Column({ default: '' })
+  type: 'Facebook' | 'Вконтакте'
 }

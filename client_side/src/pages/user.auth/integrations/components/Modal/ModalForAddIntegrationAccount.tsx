@@ -1,6 +1,5 @@
 //core
 import React, {useState} from "react";
-import {useParams} from "react-router-dom";
 import clsx from "clsx";
 
 //components
@@ -18,7 +17,6 @@ interface IModalForAddApp {
 
 const ModalForAddIntegrationAccount: React.FC<IModalForAddApp> = ({show, setShow, app, setUID = false}) => {
   const initAccount = {
-    platformName: params.platformId,
     uid: '',
     name: '',
     token: '',
@@ -30,25 +28,25 @@ const ModalForAddIntegrationAccount: React.FC<IModalForAddApp> = ({show, setShow
   const [loginUserData, setLoginUserData] = useState(initAccount)
 
   //addAccount
-  const [addAccountMutation] = useMutation(AddAccount, {
-    update(cache, {data: {addIntegrationAccount}}) {
-      const old_data: { getListIntegrationAccounts: IIntegrationAccount[] } = cache.readQuery({
-        query: GetListIntegrationAccounts,
-        variables: {
-          platformName: params.platformId,
-        }
-      });
-      cache.writeQuery({
-        query: GetListIntegrationAccounts,
-        variables: {
-          platformName: params.platformId,
-        },
-        data: {
-          getListIntegrationAccounts: [...old_data.getListIntegrationAccounts, addIntegrationAccount]
-        }
-      });
-    }
-  });
+  // const [addAccountMutation] = useMutation(AddAccount, {
+  //   update(cache, {data: {addIntegrationAccount}}) {
+  //     const old_data: { getListIntegrationAccounts: IIntegrationAccount[] } = cache.readQuery({
+  //       query: GetListIntegrationAccounts,
+  //       variables: {
+  //         platformName: params.platformId,
+  //       }
+  //     });
+  //     cache.writeQuery({
+  //       query: GetListIntegrationAccounts,
+  //       variables: {
+  //         platformName: params.platformId,
+  //       },
+  //       data: {
+  //         getListIntegrationAccounts: [...old_data.getListIntegrationAccounts, addIntegrationAccount]
+  //       }
+  //     });
+  //   }
+  // });
 
   const saveAccountHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,16 +57,16 @@ const ModalForAddIntegrationAccount: React.FC<IModalForAddApp> = ({show, setShow
     } else if (setUID && !loginUserData.uid) {
       setLoginUserData(prev => ({...prev, error_type: 'uid', error_text: 'Укажите id'}))
     } else {
-      addAccountMutation({
-        variables: loginUserData
-      })
-        .then(data => {
-          setShow(false);
-          setLoginUserData(initAccount)
-        })
-        .catch(e => {
-          setLoginUserData(prev => ({...prev, error_type: 'token', error_text: e.message}))
-        })
+      // addAccountMutation({
+      //   variables: loginUserData
+      // })
+      //   .then(data => {
+      //     setShow(false);
+      //     setLoginUserData(initAccount)
+      //   })
+      //   .catch(e => {
+      //     setLoginUserData(prev => ({...prev, error_type: 'token', error_text: e.message}))
+      //   })
 
     }
   }

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
 
 // Define a type for the slice state
 interface AlertState {
@@ -28,6 +27,4 @@ export const alertSlice = createSlice({
 })
 
 export const { addAlert, removeAlert } = alertSlice.actions
-export const getAlerts = (state: RootState) => state.user
-
 export default alertSlice.reducer

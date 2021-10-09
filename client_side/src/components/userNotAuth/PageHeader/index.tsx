@@ -6,9 +6,7 @@ import Logo from "@components/Base/Logo/Logo";
 import MyModal from "@components/Modal/Modal";
 import ModalHeader from "@components/userNotAuth/PageHeader/Modal/ModalHeader";
 import ModalBody from "@components/userNotAuth/PageHeader/Modal/ModalBody";
-import {LinkForScroll} from "@components/userNotAuth/PageHeader/utils/utils";
 
-type ModalType = 'login' | 'signUp'
 
 const PageHeader: React.FC = () => {
   const [showModal, setShowModal] = useState(false)

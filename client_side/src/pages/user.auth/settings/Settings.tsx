@@ -23,7 +23,7 @@ export default function Settings() {
     show: false,
   }
   const [passwordData, setPasswordData] = useState(initPassword)
-  const [image, setImage] = useState(initUser.avatar)
+  const [image, setImage] = useState(workWithServer.getUserAvatar(initUser.avatar))
 
   return (
     <>
@@ -106,7 +106,7 @@ export default function Settings() {
           form.append('password', passwordData.oldPassword)
           form.append('newPassword', passwordData.password)
           form.append('file', image)
-          workWithServer.changeUserDate(form)
+          workWithServer.changeUserData(form)
             .then((data: Message) => {
               dispatch(addAlert(data))
               const newUser = {
@@ -117,7 +117,7 @@ export default function Settings() {
               setPasswordData(initPassword)
               dispatch(setCurrentUser(newUser))
             })
-            .catch((err) => {
+            .catch(() => {
               dispatch(addAlert({
                 type: 'error',
                 message: 'Ошибка соединения'

@@ -21,7 +21,9 @@ export class UserController {
   @Get('current-user')
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Req() req): Promise<User | Message> {
-    return await this.userService.findUser(req.user);
+    let user = await this.userService.findUser(req.user)
+    user = await this.userService.status_tariff(user)
+    return user;
   }
 
   @Post('login')

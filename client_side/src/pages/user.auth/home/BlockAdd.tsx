@@ -14,7 +14,7 @@ interface IBlockAdd {
   complete: boolean
 }
 
-const BlockAdd: React.FC<IBlockAdd> = ({title, text, complete, textButton, onClick}) => {
+export const BlockAdd: React.FC<IBlockAdd> = ({title, text, complete, textButton, onClick}) => {
   return <div className="mb-4 bg-white rounded-xl p-4 px-8 border border-gold border-dashed w-full md:w-auto md:mr-8">
     <p className={clsx("font-bold text-lg text-black text-center",{'text-opacity-20': complete} )}>{title}</p>
     <p className={clsx("text-black text-center",{'text-opacity-20': complete} )}>{text}</p>

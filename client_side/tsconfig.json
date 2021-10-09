@@ -19,6 +19,5 @@
       "@public/*": ["public/*"]
     }
   },
-  "include": ["src"],
-  "files": ["src/index.d.ts"]
+  "include": ["src"]
 }

@@ -2,15 +2,16 @@
 import React, {useState} from "react";
 import { useLocation } from 'react-router-dom';
 import clsx from "clsx";
+import Cookies from "js-cookie";
 
 //components
 import Logo from "@components/Base/Logo/Logo";
-import {ElementNavbar} from "@pages/platform/components/header/ElementNavbar";
+import {ElementNavbar} from "@components/user.auth/PageHeader/ElementNavbar";
 
 //redux
 import {useAppDispatch} from "@/store/hooks";
-import Cookies from "js-cookie";
 import {setCurrentUser} from "@/store/features/userSlice";
+
 
 
 const MenuLeft: React.FC = () => {
@@ -22,7 +23,7 @@ const MenuLeft: React.FC = () => {
   const active_path = location.pathname === '/'
     ? '/'
     : `/${location.pathname.split('/')[1]}`
-
+  console.log(active_path)
   const navList = [
     {
       path: '/',
@@ -86,7 +87,7 @@ const MenuLeft: React.FC = () => {
       active: function () {
         return active_path === this.path
       },
-      icon: 'history',
+      icon: 'receipt',
     },
     {
       path: '/',

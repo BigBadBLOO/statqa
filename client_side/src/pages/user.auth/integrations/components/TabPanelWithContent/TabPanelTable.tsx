@@ -41,6 +41,7 @@ const TabPanelTable: React.FC<ITabPanelTable> = ({data}) => {
     const [selectedRowsInit, setSelectedRowsInit] = useState([])
     const columns = useMemo(() => [{Header: 'Column 1', accessor: 'id'}], [])
 
+
     const {
         selectedFlatRows,
         rows,
@@ -53,6 +54,7 @@ const TabPanelTable: React.FC<ITabPanelTable> = ({data}) => {
             return row.cabinets || []
         },
         initialState: {
+            // @ts-ignore
             expanded: expandedRows,
             selectedRowIds: selectedRowsInit
         }

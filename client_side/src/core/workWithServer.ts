@@ -13,7 +13,7 @@ const workWithServer = {
   signup: (data: IUser) => {
     return requestPost(`${server}/user/sign-up/`, data)
   },
-  changeUserDate: (data: FormData) => {
+  changeUserData: (data: FormData) => {
     return requestPostFormData(`${server}/user/change-user-data/`, data)
   },
   getUserAvatar: (imageName: string) => {
@@ -27,7 +27,6 @@ const workWithServer = {
   getIntegrationUsers: () => {
     return requestGet(`${server}/integration-user/get-integration-users/`)
   },
-  // work with integration user
   getStatusAccounts: (data: number[]) => {
     return requestPost(`${server}/integration-user/get-status-accounts/`, data)
   },
@@ -56,8 +55,14 @@ const workWithServer = {
   getStatistics: () => {
     return requestGet(`${server}/statistic/get-statistics/`)
   },
+  changeStatisticAvatar: (data: FormData) => {
+    return requestPostFormData(`${server}/statistic/change-avatar/`, data)
+  },
   saveStatistic: (data: Statistic) => {
     return requestPost(`${server}/statistic/save-statistic/`, data)
+  },
+  getStatisticAvatar: (imageName: string) => {
+    return `${server}/statistic/avatar/${imageName}`
   },
 }
 export default workWithServer
