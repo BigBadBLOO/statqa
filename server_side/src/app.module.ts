@@ -5,7 +5,8 @@ import {UserModule} from "./user/user.module";
 import {IntegrationAppModule} from './integration-app/integration-app.module';
 import {IntegrationUserModule} from './integrtion-user/integration-user.module';
 import {IntegrationCabinetModule} from './integrtion-cabinet/integration-cabinet.module';
-import { StatisticModule } from './statistic/statistic.module';
+import {StatisticModule} from './statistic/statistic.module';
+import {NotificationsModule} from "./notifications/notifications.module";
 import config from "../config/config";
 
 @Module({
@@ -16,6 +17,7 @@ import config from "../config/config";
     IntegrationUserModule,
     IntegrationCabinetModule,
     StatisticModule,
+    NotificationsModule
   ],
   controllers: [],
   providers: [],

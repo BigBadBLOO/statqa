@@ -4,6 +4,7 @@ import appReducer from "@/store/features/integrationAppSlice";
 import alertReducer from "@/store/features/alertSlice";
 import statisticReducer from "@/store/features/statisticSlice";
 import integrationPageReducer from "@/store/features/integrationPageSlice";
+import pageStatisticReducer from "@/store/features/pageStatisticSlice";
 
 
 const store = configureStore({
@@ -13,9 +14,10 @@ const store = configureStore({
     statistic: statisticReducer,
     alert: alertReducer,
     integrationPage: integrationPageReducer,
+    pageStatistic: pageStatisticReducer
   },
 })
-console.log(typeof store.getState)
+
 export default store
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

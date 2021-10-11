@@ -61,6 +61,13 @@ const workWithServer = {
   saveStatistic: (data: Statistic) => {
     return requestPost(`${server}/statistic/save-statistic/`, data)
   },
+
+  workWithStatisticsArchive: (data:  {[key: string]: boolean}) => {
+    return requestPost(`${server}/statistic/work-with-statistics-archive/`, data)
+  },
+  deleteStatistics: (data:  number[]) => {
+    return requestPost(`${server}/statistic/delete-statistics/`, data)
+  },
   getStatisticAvatar: (imageName: string) => {
     return `${server}/statistic/avatar/${imageName}`
   },

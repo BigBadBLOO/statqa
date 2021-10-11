@@ -55,10 +55,23 @@ export class StatisticController {
 
   @Post('save-statistic')
   @UseGuards(JwtAuthGuard)
-  async saveStatistic(@Req() req, @Body() body: Statistic, @UploadedFile() file: Express.Multer.File): Promise<Message> {
+  async saveStatistic(@Req() req, @Body() body: Statistic): Promise<Message> {
     const user_id = req.user
     return await this.integrationStatisticService.saveStatistic(user_id, body);
   }
+
+  @Post('work-with-statistics-archive')
+  @UseGuards(JwtAuthGuard)
+  async workWithStatisticsArchive(@Body() body: {[key: number]: boolean}): Promise<Message> {
+    return await this.integrationStatisticService.workWithStatisticsArchive(body);
+  }
+
+  @Post('delete-statistics')
+  @UseGuards(JwtAuthGuard)
+  async deleteStatistics(@Body() body: number[]): Promise<Message> {
+    return await this.integrationStatisticService.deleteStatistics(body);
+  }
+
   @Get('avatar/:imageName')
   async findStatisticName(@Param('imageName') imageName, @Res() res): Promise<object>{
     return res.sendfile(`${process.cwd()}/uploads/statistic-avatar/${imageName}`)

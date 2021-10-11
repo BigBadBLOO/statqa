@@ -22,6 +22,30 @@ export class StatisticService {
     })
   }
 
+  async workWithStatisticsArchive(statistics_id: {[key: number]: boolean}): Promise<Message> {
+    const statistics = []
+    Object.keys(statistics_id).forEach(id => {
+      const statistic = new Statistic()
+      statistic.id = Number(id)
+      statistic.in_archive = statistics_id[id]
+      statistic.date_start_in_archive =  statistic.in_archive ? new Date() : null
+      statistics.push(statistic)
+    })
+    await this.integrationStatisticRepository.save(statistics)
+    return {
+      type: 'success',
+      message: 'Статистики добавлены в архив'
+    }
+  }
+
+  async deleteStatistics(statistics_id: number[]): Promise<Message> {
+    await this.integrationStatisticRepository.delete(statistics_id)
+    return {
+      type: 'success',
+      message: 'Статистики успешно удалены'
+    }
+  }
+
   async getStatistics(user_id: number): Promise<Statistic[]> {
     const user = new User();
     user.id = user_id
