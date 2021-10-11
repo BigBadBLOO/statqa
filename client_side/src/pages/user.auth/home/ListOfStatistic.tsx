@@ -1,8 +1,12 @@
+//core
 import React from "react";
 import {useHistory} from "react-router-dom";
 import StackGrid, {transitions} from "react-stack-grid";
 import {withSize} from 'react-sizeme';
+
+//redux
 import OneStatistic from "@pages/user.auth/home/OneStatistic";
+import {useAppSelector} from "@/store/hooks";
 
 const {scaleDown} = transitions;
 
@@ -13,6 +17,8 @@ interface IListOfStatistic {
 
 const ListOfStatistic: React.FC<IListOfStatistic> = ({statistics,size}) => {
   let history = useHistory();
+  const selectedStatistics = useAppSelector((state) => state.pageStatistic.selectedStatistic);
+
 
   const width = size.width <= 768 ? '100%' : size.width <= 1024 ? '33.3%' : '25%'
   return <div className="mt-4 w-full">
@@ -26,8 +32,7 @@ const ListOfStatistic: React.FC<IListOfStatistic> = ({statistics,size}) => {
       entered={scaleDown.entered}
       leaved={scaleDown.leaved}
     >
-
-      <div className="mb-4 bg-white rounded-xl p-4 px-8 border border-gold border-dashed w-full h-40">
+      <div className="bg-white rounded-xl p-4 px-8 border border-gold border-dashed">
         <p className="font-bold text-lg text-black text-center">
           Создать новую<br/>статистику
         </p>
@@ -39,7 +44,10 @@ const ListOfStatistic: React.FC<IListOfStatistic> = ({statistics,size}) => {
         </p>
       </div>
       {
-        statistics.map(statistic => <OneStatistic key={statistic.id} statistic={statistic}/>)
+        statistics.map(statistic => {
+          const isSelected = !!selectedStatistics.find(id => id === statistic.id)
+          return <OneStatistic key={statistic.id} statistic={statistic} isSelected={isSelected}/>
+        })
       }
     </StackGrid>
   </div>

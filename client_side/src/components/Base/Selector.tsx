@@ -9,7 +9,7 @@ interface ISelectorProps {
   onChange: (e?: any) => void
   className?: string,
   isMulti?: boolean
-  options: any
+  options: any[]
   isLoading?: boolean
   isOptionDisabled?: (arg0: any) => boolean
 }

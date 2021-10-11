@@ -7,6 +7,7 @@ import UserAvatar from "@components/user.auth/PageHeader/User.avatar";
 
 //redux
 import {useAppSelector} from "@/store/hooks";
+import Notifications from "@components/user.auth/PageHeader/Notification";
 
 
 const MenuTop: React.FC = () => {
@@ -33,6 +34,7 @@ const MenuTop: React.FC = () => {
               }}
               >all_inclusive</i>
           }
+          <Notifications/>
           <UserAvatar/>
         </div>
 
