@@ -35,4 +35,20 @@ const SearchStatisticRow: React.FC<ISearchStatisticRow> = ({statistic}) => {
     )
 }
 
-export default SearchStatisticRow
+interface ISearchStatisticRowList {
+    title: string
+    statistics: Statistic[]
+}
+const SearchStatisticRowList: React.FC<ISearchStatisticRowList> = ({statistics, title}) => {
+
+    return statistics.length > 0 && <>
+        <p>{title}</p>
+        {
+            statistics.map(statistic => {
+                return <SearchStatisticRow key={statistic.id} statistic={statistic}/>
+            })
+        }
+    </>
+}
+
+export default SearchStatisticRowList

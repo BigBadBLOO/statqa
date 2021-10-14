@@ -2,6 +2,7 @@ import {Body, Controller, Get, Post, Req, UseGuards} from '@nestjs/common';
 import {IntegrationCabinetService} from "./integration-cabinet.service";
 import {JwtAuthGuard} from "../user/auth/jwt-auth.guard";
 import {IntegrationCabinet} from "./integration-cabinet.entity";
+import {Campaign} from "../statistic/campaign.entity";
 
 @Controller('integration-cabinet')
 export class IntegrationCabinetController {
@@ -35,7 +36,7 @@ export class IntegrationCabinetController {
 
   @Get('get-campaigns-name')
   @UseGuards(JwtAuthGuard)
-  async getCampaignsName(@Req() req): Promise<object[]> {
+  async getCampaignsName(@Req() req): Promise<{ result: Campaign[],  connected: Campaign[]}> {
     const user_id = req.user
     return await this.integrationCabinetService.getCampaignsName(user_id);
   }

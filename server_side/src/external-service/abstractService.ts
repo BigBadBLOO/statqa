@@ -1,5 +1,6 @@
 import {HttpService} from "@nestjs/common";
 import {IntegrationUser} from "../integrtion-user/integration-user.entity";
+import {Campaign} from "../statistic/campaign.entity";
 
 
 export default abstract class AbstractService {
@@ -13,7 +14,7 @@ export default abstract class AbstractService {
     throw new Error('implement this method');
   }
 
-  async getCampaignsId(): Promise<{type: string, uid: string, name: string}[]> {
+  async getCampaignsId(): Promise<Campaign[]> {
     throw new Error('implement this method');
   }
 }

@@ -8,6 +8,7 @@ export interface Elem {
   active?: () => boolean
   icon?: string
   name: string
+  onClick?: () => void
 }
 
 interface ElementNavbar {
@@ -16,7 +17,7 @@ interface ElementNavbar {
 
 export const ElementNavbar: React.FC<ElementNavbar> = ({elem}) => {
   return (
-    <Link className="flex cursor-pointer text-sm whitespace-nowrap" to={`${elem.path}`}>
+    <Link className="flex cursor-pointer text-sm whitespace-nowrap" to={`${elem.path}`} onClick={elem.onClick}>
       <hr className={elem.active() ? 'absolute h-12 border border-gold' : 'hidden'}/>
 
       <span className={clsx("material-icons text-gray-500 p-3", {'text-gold': elem.active()})}>

@@ -15,8 +15,9 @@ const Documentation = lazy(() => import('@pages/user.auth/Documentation/Document
 const Settings = lazy(() => import("@pages/user.auth/settings/Settings"));
 const Integrations = lazy(() => import("@pages/user.auth/integrations/Integrations"));
 const Tariffs = lazy(() => import("@pages/user.auth/tariffs/Tariffs"));
-
 const CreateStatistic = lazy(() => import("@pages/user.auth/createStatistic/CreateStatistic"));
+const DetailStatistic = lazy(() => import("@pages/user.auth/detailStatistic/DetailStatistic"));
+
 const RouterNavbar: React.FC = () => {
   return (
     <div className="pt-12 md:pl-12">
@@ -29,6 +30,7 @@ const RouterNavbar: React.FC = () => {
             <Route path="/" exact={true} component={Home}/>
             <Route path="/createStatistic/" exact={true} component={CreateStatistic}/>
             <Route path="/editStatistic/:id" exact={true} component={CreateStatistic}/>
+            <Route path="/detailStatistic/:id" exact={true} component={DetailStatistic}/>
             {/*Интеграции*/}
             <Route path="/tariffs/" exact component={Tariffs}/>
             {/*Интеграции*/}

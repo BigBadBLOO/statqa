@@ -7,6 +7,8 @@ import {IntegrationUserModule} from './integrtion-user/integration-user.module';
 import {IntegrationCabinetModule} from './integrtion-cabinet/integration-cabinet.module';
 import {StatisticModule} from './statistic/statistic.module';
 import {NotificationsModule} from "./notifications/notifications.module";
+import { TableTemplateModule } from './table-template/table-template.module';
+import { StatisticRowModule } from './statistic-row/statistic-row.module';
 import config from "../config/config";
 
 @Module({
@@ -17,7 +19,9 @@ import config from "../config/config";
     IntegrationUserModule,
     IntegrationCabinetModule,
     StatisticModule,
-    NotificationsModule
+    NotificationsModule,
+    TableTemplateModule,
+    StatisticRowModule
   ],
   controllers: [],
   providers: [],

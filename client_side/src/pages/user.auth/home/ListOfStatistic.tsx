@@ -21,6 +21,7 @@ const ListOfStatistic: React.FC<IListOfStatistic> = ({statistics,size}) => {
 
 
   const width = size.width <= 768 ? '100%' : size.width <= 1024 ? '33.3%' : '25%'
+  console.log(width)
   return <div className="mt-4 w-full">
     <StackGrid
       gutterHeight={30}

@@ -1,4 +1,4 @@
-import {Repository} from "typeorm";
+import {Any, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {HttpService, Injectable} from '@nestjs/common';
 import {IntegrationApp} from "../integration-app/integration-app.entity";
@@ -6,6 +6,7 @@ import {IntegrationUser} from "../integrtion-user/integration-user.entity";
 import {IntegrationCabinet} from "./integration-cabinet.entity";
 import FactoryService from "../external-service/factoryService";
 import {User} from "../user/user.entity";
+import {Campaign} from "../statistic/campaign.entity";
 
 @Injectable()
 export class IntegrationCabinetService {
@@ -17,6 +18,8 @@ export class IntegrationCabinetService {
     private integrationUserRepository: Repository<IntegrationUser>,
     @InjectRepository(IntegrationCabinet)
     private integrationCabinetRepository: Repository<IntegrationCabinet>,
+    @InjectRepository(Campaign)
+    private campaignRepository: Repository<Campaign>,
   ) {
   }
 
@@ -88,8 +91,8 @@ export class IntegrationCabinetService {
     })
   }
 
-  async getCampaignsName(user_id: number): Promise<object[]>{
-    let result = []
+  async getCampaignsName(user_id: number): Promise<{result: Campaign[], connected: Campaign[]}>{
+    let result: Campaign[] = []
     const user = new User()
     user.id = user_id
     const integrationUsers = await this.integrationUserRepository.find({
@@ -104,7 +107,15 @@ export class IntegrationCabinetService {
       const campaigns = await service.getCampaignsId()
       result = [...result, ...campaigns]
     }
-
-    return result
+    const connected_campaigns = await this.campaignRepository.find({
+      where: {
+        uid: Any(result.map(el => el.uid))
+      },
+    })
+    const new_campaigns = result.filter(el => !connected_campaigns.find(conn => conn.uid === el.uid))
+    return {
+      result: new_campaigns,
+      connected: connected_campaigns
+    }
   }
 }

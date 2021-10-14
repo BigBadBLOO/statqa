@@ -11,6 +11,8 @@ import workWithServer from "@core/workWithServer";
 //redux
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {setIntegrationUsers} from "@/store/features/integrationAppSlice";
+import {addAlert} from "@/store/features/alertSlice";
+import {setSelectedRows} from "@/store/features/integrationPageSlice";
 
 interface IModalForAddApp {
   show: boolean;
@@ -79,7 +81,7 @@ const ModalForAddFBCabinet: React.FC<IModalForAddApp> = ({show, setShow}) => {
       cabinets: selectedCabinets
     }).then((data: IIntegrationCabinet[]) => {
       const idx_user = allIntegrationUsers.findIndex((el) => el.id === selectedAccount.id)
-      if(idx_user){
+      if(idx_user >= 0){
         const result = allIntegrationUsers.map(user => {
           if(user.id === selectedAccount.id){
             return {...user, cabinets: [...user.cabinets, ...data]}
@@ -87,6 +89,8 @@ const ModalForAddFBCabinet: React.FC<IModalForAddApp> = ({show, setShow}) => {
           return user
         });
         dispatch(setIntegrationUsers(result))
+        dispatch(setSelectedRows([]))
+        dispatch(addAlert({type: 'success', message: 'Кабинеты успешно добавлены'}))
       }
       setShow(false)
       setSelectedAccount({})

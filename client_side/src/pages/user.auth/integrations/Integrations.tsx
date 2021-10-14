@@ -12,7 +12,6 @@ import workWithServer from "@core/workWithServer";
 import {setAllApps} from "@/store/features/integrationAppSlice";
 
 
-
 const Integrations: React.FC = () => {
   const apps = useAppSelector((state => state.app.allApps))
 

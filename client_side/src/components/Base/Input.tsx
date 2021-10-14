@@ -9,14 +9,15 @@ type InputType = {
     icon?: string,
     type?: typeValue,
     value: string | number,
+    name?: string
     className?: string,
     placeholder: string,
     label?: string,
     disabled?: boolean,
-    setValue: (e: any) => void,
+    setValue: (e: any, name?: string) => void,
 }
 
-export const Input: React.FC<InputType> = ({icon, type = 'text', placeholder, label, className, disabled, value, setValue}) => {
+export const Input: React.FC<InputType> = ({icon, type = 'text', placeholder, label, className, disabled, value, setValue, name}) => {
 
     const classes = [
         'rounded-md border px-2 py-1 m-2 place-content-center bg-white'
@@ -42,10 +43,12 @@ export const Input: React.FC<InputType> = ({icon, type = 'text', placeholder, la
                 <input
                     className="focus:outline-none w-full"
                     type={type}
+                    name={name}
                     onChange={e => {
                         let tempValue: string | number = e.target.value
+                        let name = e.target.name
                         if (type === 'number' && !validateNumber(tempValue)) tempValue = value
-                        setValue(tempValue)
+                        setValue(tempValue, name)
                     }}
                     placeholder={placeholder}
                     value={value}

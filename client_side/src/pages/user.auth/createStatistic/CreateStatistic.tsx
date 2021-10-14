@@ -7,61 +7,92 @@ import {Button} from "@components/Base/Button";
 import {ImageUploader, Input} from "@components/Base/Input";
 import Row from "@components/Base/Row";
 import {Selector} from "@components/Base/Selector";
+import TagsLabel from "@pages/user.auth/createStatistic/TagsLabel";
 
 //redux
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {addAlert} from "@/store/features/alertSlice";
 import workWithServer from "@core/workWithServer";
+import {Campaign} from "../../../../../server_side/src/statistic/campaign.entity";
+import Back from "@components/Base/back/Back";
+
 
 export default function CreateStatistic() {
   let history = useHistory();
-  let { id }: {id: string} = useParams();
+  let {id}: { id: string } = useParams();
   const statistics = useAppSelector(state => state.statistic.statistics)
   const statistic = statistics.find(el => el.id === Number(id))
 
   const dispatch = useAppDispatch();
-
 
   const initStatistic: Statistic = {
     in_archive: false,
     tags: '',
     description: '',
     name: '',
+    conversion: null,
     campaigns: []
   };
 
   const [addStatistic, setAddStatistic] = useState(initStatistic)
   const [image, setImage] = useState(addStatistic.avatar)
   const [campaigns, setCampaigns] = useState([])
+  const [connectedCampaigns, setConnectedCampaigns] = useState([])
 
   useEffect(() => {
-    workWithServer.getCampaignsName().then((data: Campaign[]) => {
-      setCampaigns(data)
+    workWithServer.getCampaignsName().then((data: {result: Campaign[],  connected: Campaign[]}) => {
+      setCampaigns(data.result)
+      setConnectedCampaigns(data.connected)
     })
   }, [])
 
   useEffect(() => {
-    if(statistic){
+    if (id && statistic) {
       setAddStatistic(statistic)
-      if(statistic.avatar){
+      if (statistic.avatar) {
         const avatar = workWithServer.getStatisticAvatar(statistic.avatar)
         setImage(avatar)
       }
-
     }
   }, [statistic])
 
-  console.log(addStatistic)
+  if (id && !statistic) return <p className="text-center">Статистики не существует или у Вас нет к ней доступа</p>
   const fb_campaigns = campaigns.filter(el => el.type === 'Facebook')
   const vk_campaigns = campaigns.filter(el => el.type === 'ВКонтакте')
 
+  const fb_connected_campaigns = connectedCampaigns.filter(el => el.type === 'Facebook')
+  const vk_connected_campaigns = connectedCampaigns.filter(el => el.type === 'ВКонтакте')
+
+  const fb_grouped_options: GroupedOption[] = [
+    {
+      label: 'Новые',
+      options: fb_campaigns.map(el => ({value: el.uid, label: el.name})),
+    },
+    {
+      label: 'Подключенные',
+      options: fb_connected_campaigns.map(el => ({value: el.uid, label: el.name, isDisabled: true})),
+    },
+  ];
+
+  const vk_grouped_options: GroupedOption[] = [
+    {
+      label: 'Новые',
+      options: vk_campaigns.map(el => ({value: el.uid, label: el.name})),
+    },
+    {
+      label: 'Подключенные',
+      options: vk_connected_campaigns.map(el => ({value: el.uid, label: el.name, isDisabled: true})),
+    },
+  ];
+
   const saveStatisticHandler = () => {
     workWithServer.saveStatistic(addStatistic).then((data: Message) => {
-      if(image){
+      if (image) {
         const formData = new FormData();
         formData.append('file', image)
         formData.append('id', data.data)
-        workWithServer.changeStatisticAvatar(formData).then(r => {})
+        workWithServer.changeStatisticAvatar(formData).then(r => {
+        })
       }
       dispatch(addAlert(data))
       history.push('/')
@@ -71,19 +102,13 @@ export default function CreateStatistic() {
   return (
     <>
       <div className="flex">
-        <i
-          className="material-icons mr-2 my-auto cursor-pointer"
-          onClick={() => {
-            history.push('/')
-          }}
-        >arrow_back</i>
+        <Back/>
         <span className="font-bold text-xl my-auto mr-2">
           {
             id
               ? `Редактирование «${statistic && statistic.name}»`
               : 'Создание статистики'
           }
-
         </span>
       </div>
 
@@ -102,23 +127,25 @@ export default function CreateStatistic() {
           <Input
             value={addStatistic.description}
             placeholder="Введите описание"
-            setValue={(description) => setAddStatistic((prev: Statistic) => ({
-              ...prev,
-              description
-            }))}
+            setValue={(description) => setAddStatistic((prev: Statistic) => ({...prev, description}))}
           />
         </Row>
         <Row label="Обложка">
           <ImageUploader image={image} setImage={setImage} circle={false}/>
         </Row>
-        <Row label="Метки">
+        <Row label={<TagsLabel
+            title="Метки"
+            help={
+              <span>
+                Метки для группировки статистик и быстрого поиска. <br/>
+                Метки источников трафика создаются автоматически
+              </span>
+            }
+          />}>
           <Input
             value={addStatistic.tags}
             placeholder="Укажите метки через запятую, не более 5 штук"
-            setValue={(tags) => setAddStatistic((prev: Statistic) => ({
-              ...prev,
-              tags
-            }))}
+            setValue={(tags) => setAddStatistic((prev: Statistic) => ({...prev, tags}))}
           />
         </Row>
       </div>
@@ -140,7 +167,7 @@ export default function CreateStatistic() {
                     const other_campaigns = addStatistic.campaigns.filter(el => el.type !== 'Facebook')
                     setAddStatistic({...addStatistic, campaigns: [...other_campaigns, ...campaigns]})
                   }}
-                  options={fb_campaigns.map(el => ({value: el.uid, label: el.name}))}
+                  options={fb_grouped_options}
               />
           </Row>
         }
@@ -161,11 +188,16 @@ export default function CreateStatistic() {
                     const other_campaigns = addStatistic.campaigns.filter(el => el.type !== 'ВКонтакте')
                     setAddStatistic({...addStatistic, campaigns: [...other_campaigns, ...campaigns]})
                   }}
-                  options={vk_campaigns.map(el => ({value: el.uid, label: el.name}))}
+                  options={vk_grouped_options}
               />
           </Row>
         }
-        <Row label="Ценность конверсии">
+        <Row label={<TagsLabel
+          title="Ценность конверсии"
+          help={
+            <span>Укажите средний доход с одной конверсии в валюте рекламного кабинета, чтобы в статистике считалась экономика: доход, прибыль и ROI</span>
+          }
+        />}>
           <Input
             value={addStatistic.conversion}
             placeholder="Средний доход с одной конверсии"
@@ -178,14 +210,14 @@ export default function CreateStatistic() {
       </div>
       <div className="rounded shadow-sm bg-white mt-4 p-4">
         <Row label="Доступы">
-          <Input
-            value={addStatistic.conversion}
-            placeholder="Введите эл. почту"
-            setValue={(tags) => setAddStatistic((prev: Statistic) => ({
-              ...prev,
-              tags
-            }))}
-          />
+          {/*<Input*/}
+          {/*  value={addStatistic.conversion}*/}
+          {/*  placeholder="Введите эл. почту"*/}
+          {/*  setValue={(tags) => setAddStatistic((prev: Statistic) => ({*/}
+          {/*    ...prev,*/}
+          {/*    tags*/}
+          {/*  }))}*/}
+          {/*/>*/}
         </Row>
       </div>
 

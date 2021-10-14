@@ -36,8 +36,9 @@ export default function useLogin() {
             setErrorEmail(r)
           }else{
             const {token, ...data} = r
-            dispatch(setCurrentUser(data))
             Cookies.set('token', token)
+            dispatch(setCurrentUser(data))
+
           }
         })
         .catch(async (err) => {

@@ -1,7 +1,7 @@
 import React from "react";
 
 interface IRow {
-  label: string
+  label: any
 }
 
 const Row: React.FC<IRow> = ({label, children}) => {

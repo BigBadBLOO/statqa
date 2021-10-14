@@ -2,8 +2,11 @@ import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "../user/user.entity";
 
 export enum NotificationType {
-  FREE= 'FREE',
-  PAID= 'PAID'
+  PAYMENT= 'PAYMENT',
+  TARIFF= 'TARIFF',
+  ACCESS_TO_STATISTIC = 'ACCESS_TO_STATISTIC',
+  INTEGRATION_ERROR = 'INTEGRATION_ERROR',
+  REGISTRATION = 'REGISTRATION'
 }
 
 @Entity()
@@ -19,6 +22,13 @@ export class Notifications {
 
   @Column({ default: false })
   isRead: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: NotificationType,
+    default: NotificationType.PAYMENT,
+  })
+  type: NotificationType;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;

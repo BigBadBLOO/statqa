@@ -1,5 +1,4 @@
 import {serverURI} from "@/config/serverURI";
-
 const server = serverURI
 
 const workWithServer = {
@@ -70,6 +69,26 @@ const workWithServer = {
   },
   getStatisticAvatar: (imageName: string) => {
     return `${server}/statistic/avatar/${imageName}`
+  },
+
+  //work with table templates
+  getAllTableTemplates: (data: {table: string}) => {
+    return requestPost(`${server}/table-template/get-all-table-templates/`, data)
+  },
+  getTableTemplate: (data: {id: string}) => {
+    return requestPost(`${server}/table-template/get-table-template/`, data)
+  },
+  addTableTemplate: (data: Template) => {
+    return requestPost(`${server}/table-template/add-table-template/`, data)
+  },
+  updateTableTemplate: (data: Template) => {
+    return requestPost(`${server}/table-template/update-table-template/`, data)
+  },
+  updateTableColumnTemplate: (data: TemplateColumn) => {
+    return requestPost(`${server}/table-template/update-table-column-template-data/`, data)
+  },
+  deleteTableTemplate: (data: { id: number }) => {
+    return requestPost(`${server}/table-template/delete-table-template/`, data)
   },
 }
 export default workWithServer

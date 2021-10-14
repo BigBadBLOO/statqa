@@ -23,7 +23,7 @@ const MenuLeft: React.FC = () => {
   const active_path = location.pathname === '/'
     ? '/'
     : `/${location.pathname.split('/')[1]}`
-  console.log(active_path)
+
   const navList = [
     {
       path: '/',
@@ -95,7 +95,7 @@ const MenuLeft: React.FC = () => {
       active: function () {
         return false
       },
-      icon: 'logout',
+      icon: 'meeting_room',
       onClick: () => {
         Cookies.remove('token')
         dispatch(setCurrentUser({email: '', isLoading: false}))

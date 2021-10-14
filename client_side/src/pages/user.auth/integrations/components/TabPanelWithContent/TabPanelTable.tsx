@@ -11,7 +11,7 @@ import CheckBox from "@components/Base/CheckBox";
 import './tabPanelTable.css'
 
 //redux
-import {useAppDispatch} from "@/store/hooks";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {setSelectedRows} from "@/store/features/integrationPageSlice";
 import workWithServer from "@core/workWithServer";
 
@@ -36,11 +36,9 @@ const TabPanelTable: React.FC<ITabPanelTable> = ({data}) => {
 
     }, [])
 
-
     const [expandedRows, setExpandedRow] = useState({})
     const [selectedRowsInit, setSelectedRowsInit] = useState([])
     const columns = useMemo(() => [{Header: 'Column 1', accessor: 'id'}], [])
-
 
     const {
         selectedFlatRows,
@@ -61,7 +59,6 @@ const TabPanelTable: React.FC<ITabPanelTable> = ({data}) => {
     }, useExpanded, useRowSelect)
 
     useEffect(() => {
-        // setSelectedRows(selectedFlatRows)
         setSelectedRowsInit(selectedRowIds)
     }, [selectedRowIds])
 

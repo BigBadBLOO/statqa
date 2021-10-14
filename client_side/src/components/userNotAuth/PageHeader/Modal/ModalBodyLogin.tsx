@@ -31,7 +31,6 @@ const ModalBodyLogin: React.FC = () => {
         />
         {
           data.errorEmail && <Error message={data.errorEmail}/>
-
         }
       </div>
 

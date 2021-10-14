@@ -16,6 +16,7 @@ export default function Settings() {
   const initUser = useAppSelector((state) => state.user.currentUser)
   const dispatch = useAppDispatch()
   const [user, setUser] = useState(initUser)
+
   const initPassword = {
     oldPassword: '',
     password: '',
@@ -24,6 +25,14 @@ export default function Settings() {
   }
   const [passwordData, setPasswordData] = useState(initPassword)
   const [image, setImage] = useState(workWithServer.getUserAvatar(initUser.avatar))
+
+  const handlerInput = (value: any, name: string) => {
+    setUser(prev => ({...prev, [name]:value}))
+  }
+
+  const handlerPassword = (value: any, name: string) => {
+    setPasswordData(prev => ({...prev, [name]:value}))
+  }
 
   return (
     <>
@@ -34,20 +43,18 @@ export default function Settings() {
         </Row>
         <Row label="Имя пользователя">
           <Input
+            name="username"
             value={user.username}
             placeholder="Укажите имя пользователя"
-            setValue={(username) => {
-              setUser(prev => ({...prev, username}))
-            }}
+            setValue={handlerInput}
           />
         </Row>
         <Row label="Электронная почта">
           <Input
+            name="email"
             value={user.email}
             placeholder="Укажите имя пользователя"
-            setValue={(email) => {
-              setUser(prev => ({...prev, email}))
-            }}
+            setValue={handlerInput}
           />
         </Row>
         <Row label="Пароль">
@@ -55,28 +62,25 @@ export default function Settings() {
             passwordData.show
               ? <div className="md:flex">
                 <Input
+                  name="oldPassword"
                   value={passwordData.oldPassword}
                   type="password"
                   placeholder="Текущий пароль"
-                  setValue={(oldPassword) => {
-                    setPasswordData((prev) => ({...prev, oldPassword}))
-                  }}
+                  setValue={handlerPassword}
                 />
                 <Input
+                  name="password"
                   value={passwordData.password}
                   type="password"
                   placeholder="Новый пароль"
-                  setValue={(password) => {
-                    setPasswordData((prev) => ({...prev, password}))
-                  }}
+                  setValue={handlerPassword}
                 />
                 <Input
+                  name="passwordConfirm"
                   value={passwordData.passwordConfirm}
                   type="password"
                   placeholder="Повт. новый пароль"
-                  setValue={(passwordConfirm) => {
-                    setPasswordData((prev) => ({...prev, passwordConfirm}))
-                  }}
+                  setValue={handlerPassword}
                 />
               </div>
               : <Button type="secondary" text="Изменить пароль" onClick={() => {
@@ -102,9 +106,11 @@ export default function Settings() {
           if (user.email !== initUser.email) {
             form.append('email', user.email)
           }
+          if(passwordData.show){
+            form.append('password', passwordData.oldPassword)
+            form.append('newPassword', passwordData.password)
+          }
 
-          form.append('password', passwordData.oldPassword)
-          form.append('newPassword', passwordData.password)
           form.append('file', image)
           workWithServer.changeUserData(form)
             .then((data: Message) => {
